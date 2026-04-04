@@ -1,41 +1,92 @@
 pipeline {
-    agent any
+
+    agent { label 'mern-slave' }
 
     stages {
-        stage('Checkout') {
+
+        stage('Checkout Code') {
+
             steps {
-                git branch: 'master',
-                    url: 'https://github.com/iemafzalhassan/full-stack_chatApp.git'
+
+                git branch: 'main',
+                url: 'https://github.com/TeflonSailor/full-stack_chatApp.git'
+
             }
+
         }
 
-        stage('Test') {
+        stage('Install Backend Dependencies') {
+
             steps {
-                script {
-                    sh '''
-                        sleep 15
-                        curl -f http://localhost:5001/health
-                        curl -f http://localhost/ || exit 1
-                    '''
+
+                dir('backend') {
+
+                    bat 'npm install'
+
                 }
+
             }
+
         }
 
-        stage('Deploy') {
+        stage('Install Frontend Dependencies') {
+
             steps {
-                script {
-                    sh 'docker-compose up -d --build'
+
+                dir('frontend') {
+
+                    bat 'npm install'
+
                 }
+
             }
+
         }
+
+        stage('Build Frontend') {
+
+            steps {
+
+                dir('frontend') {
+
+                    bat 'npm run build'
+
+                }
+
+            }
+
+        }
+
+        stage('Run Backend') {
+
+            steps {
+
+                dir('backend') {
+
+                    bat 'npm start'
+
+                }
+
+            }
+
+        }
+
     }
 
     post {
+
         success {
-            echo 'Deployment and tests completed successfully!'
+
+            echo 'Build completed successfully 🎉'
+
         }
+
         failure {
-            echo 'Deployment or tests failed.'
+
+            echo 'Build failed ❌'
+
         }
+
     }
+
 }
