@@ -2,6 +2,14 @@ pipeline {
 
     agent { label 'mern-slave' }
 
+    environment {
+
+        MONGODB_URI = "mongodb://127.0.0.1:27017/chatapp"
+        PORT = "5000"
+        JWT_SECRET = "secret123"
+
+    }
+
     stages {
 
         stage('Checkout Code') {
@@ -68,22 +76,6 @@ pipeline {
                 }
 
             }
-
-        }
-
-    }
-
-    post {
-
-        success {
-
-            echo 'Build completed successfully 🎉'
-
-        }
-
-        failure {
-
-            echo 'Build failed ❌'
 
         }
 
