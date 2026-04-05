@@ -18,7 +18,7 @@ pipeline {
         stage('Install frontend') {
             steps {
                 sh '''
-                cd client
+                cd frontend
                 npm install
                 npm start &
                 sleep 20
