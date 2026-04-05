@@ -14,7 +14,7 @@ WebDriverManager.edgedriver().setup();
 
 WebDriver driver = new EdgeDriver();
 
-driver.get("http://localhost:3000");
+driver.get("http://localhost:5173");
 
 System.out.println(driver.getTitle());
 
