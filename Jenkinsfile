@@ -1,57 +1,43 @@
 pipeline {
 
-    agent { label 'mern-slave' }
+    agent any
 
-    environment {
-
-        MONGODB_URI = "mongodb://127.0.0.1:27017/chatapp"
-        PORT = "5000"
-        JWT_SECRET = "secret123"
-
+    tools {
+        maven 'Maven'
+        jdk 'JDK11'
     }
 
     stages {
 
-        stage('Install Backend Dependencies') {
-
+        stage('Clone') {
             steps {
-
-                dir('backend') {
-
-                    bat 'npm install'
-
-                }
-
+                git 'https://github.com/TeflonSailor/full-stack_chatApp.git'
             }
-
         }
 
-        stage('Install Frontend Dependencies') {
-
+        stage('Install frontend') {
             steps {
-
-                dir('frontend') {
-
-                    bat 'npm install'
-
-                }
-
+                sh '''
+                cd client
+                npm install
+                npm start &
+                sleep 20
+                '''
             }
-
         }
 
-        stage('Build Frontend') {
-
+        stage('Run Selenium Tests') {
             steps {
-
-                dir('frontend') {
-
-                    bat 'npm run build'
-
-                }
-
+                sh 'mvn clean test'
             }
+        }
 
+    }
+
+    post {
+
+        always {
+            junit 'target/surefire-reports/*.xml'
         }
 
     }
