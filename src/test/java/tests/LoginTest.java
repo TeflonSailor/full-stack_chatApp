@@ -2,24 +2,28 @@ package tests;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.testng.annotations.Test;
 
 public class LoginTest {
 
-@Test
-public void openChatApp() {
+    @Test
+    public void openChatApp() {
 
-System.setProperty("webdriver.edge.driver",
-"C:\\WebDriver\\msedgedriver.exe");
+        EdgeOptions options = new EdgeOptions();
 
-WebDriver driver = new EdgeDriver();
+        options.addArguments("--remote-allow-origins=*");
+        options.addArguments("--disable-gpu");
+        options.addArguments("--no-sandbox");
+        options.addArguments("--disable-dev-shm-usage");
+        options.addArguments("--headless=new");
 
-driver.get("http://localhost:5173");
+        WebDriver driver = new EdgeDriver(options);
 
-System.out.println(driver.getTitle());
+        driver.get("http://localhost:5173");
 
-driver.quit();
+        System.out.println("Title: " + driver.getTitle());
 
-}
-
+        driver.quit();
+    }
 }
