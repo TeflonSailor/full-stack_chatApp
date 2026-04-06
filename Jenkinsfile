@@ -21,7 +21,7 @@ pipeline {
                 cd frontend
                 npm install
                 npm run dev &
-                sleep 20
+                sleep 40
                 '''
             }
         }
