@@ -10,6 +10,9 @@ public class LoginTest {
     @Test
     public void openChatApp() {
 
+         System.setProperty("webdriver.edge.driver",
+                "C:\\WebDriver\\msedgedriver.exe");
+        
         EdgeOptions options = new EdgeOptions();
 
         options.addArguments("--remote-allow-origins=*");
